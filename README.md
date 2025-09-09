@@ -1,5 +1,5 @@
 # Tugas Individu 2 
----
+
 ## Langkah Pengimplementasian
 
 #### 1. Buat Proyek Django Baru
@@ -34,7 +34,7 @@
 
 ## Bagan Alur Django
 
-![bagan](https://github.com/raihanheriandry/tendhang/issues/1#issue-3399711906)
+![bagan](<img width="781" height="448" alt="Screenshot 2025-09-10 021301" src="https://github.com/user-attachments/assets/9818def4-8a79-43b5-ab22-348860d7aa23" />)
 
 Saat ada request dari pengguna, akan dipetakan oleh `urls.py` ke fungsi di `views.py`. `views.py` akan mengambil data dari `models.py` apabila dibutuhkan, kemudian diproses di `views.py` kembali. Output akan ditampilkan dengan cara dikirim ke Templates dan hasilnya di kembalikan ke pengguna sebagai response
 
