@@ -31,7 +31,7 @@
   <br />
   {% endif %}
 
-  <p>{{ product.description|truncatewords:25 }}...</p>
+  <p>{{ product.description|truncatewords:25 }}</p>
 
   <p><a href="{% url 'main:product_detail' product.id %}"><button>Read More</button></a></p>
 </div>
