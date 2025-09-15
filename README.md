@@ -1,10 +1,12 @@
 # Tendhang Football Shop
+Sebuah Web Football Shop untuk Orang yang Suka Menendang
 
-### Deployment
+### 🪁 Deployment
 Check here: [Tendhang Football Shop](https://raihan-maulana41-tendhang.pbp.cs.ui.ac.id/)
 
-### Archive Tugas
+### 📚 Archive Tugas
    - [Tugas 2 PBP 2025/2026](https://github.com/raihanheriandry/tendhang/wiki/Tugas-2-PBP)
+   - [Tugas 3 PBP 2025/2026](https://github.com/raihanheriandry/tendhang/wiki/Tugas-3-PBP)
 
 ---
 
