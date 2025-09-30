@@ -1,5 +1,5 @@
-# Tendhang Football Shop
-Sebuah Web Football Shop untuk Orang yang Suka Menendang
+# Tendhang Football Store
+Where Kickers Find Their Gear
 
 ### 🪁 Deployment
 Check here: [Tendhang Football Shop](https://raihan-maulana41-tendhang.pbp.cs.ui.ac.id/)
@@ -96,7 +96,7 @@ Kondisi navbar untuk versi mobile:
 
 Ketika tombol hamburger diklik: 
 
-![Mobile Nav On](https://github.com/user-attachments/assets/44b57a21-2e76-411b-90ca-835afb33621b)
+![Mobile Nav On](https://github.com/user-attachments/assets/0d8fddcc-2447-45d3-8bfa-aff4ce7472ae)
 
 Kondisi navbar untuk versi desktop: 
 
