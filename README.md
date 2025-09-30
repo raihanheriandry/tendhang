@@ -8,133 +8,96 @@ Check here: [Tendhang Football Shop](https://raihan-maulana41-tendhang.pbp.cs.ui
    - [Tugas 2 PBP 2025/2026](https://github.com/raihanheriandry/tendhang/wiki/Tugas-2-PBP)
    - [Tugas 3 PBP 2025/2026](https://github.com/raihanheriandry/tendhang/wiki/Tugas-3-PBP)
    - [Tugas 4 PBP 2025/2026](https://github.com/raihanheriandry/tendhang/wiki/Tugas-4-PBP)
+   - [Tugas 5 PBP 2025/2026](https://github.com/raihanheriandry/tendhang/wiki/Tugas-5-PBP)
 
 ---
 
-## Tugas Individu 4
+## Tugas Individu 5
 
-### Apa itu Django AuthenticationForm? Jelaskan juga kelebihan dan kekurangannya.
-Django `AuthenticationForm` adalah sebuah class form dalam Django yang dirancang khusus untuk menangani proses login pengguna. Form ini menyediakan field untuk username dan password, serta menangani validasi dan autentikasi pengguna secara otomatis.
+### Jika terdapat beberapa CSS selector untuk suatu elemen HTML, jelaskan urutan prioritas pengambilan CSS selector tersebut!
+Jika ada beberapa CSS selector yang berlaku pada satu elemen HTML, browser akan menentukan prioritas (specificity). Urutannya:
+   - Inline CSS (ditulis langsung di elemen)
+   - ID Selector (#id) → lebih tinggi dibanding class.
+   - Class, Attribute, dan Pseudo-class Selector
+   - Element dan Pseudo-element Selector (div, h1, ::before, ::after).
 
-- Kelebihan:
-   - Mudah digunakan dan cepat, sudah langsung jadi
-   - Keamanan terjamin, sudah terintegrasi dengan sistem autentikasi Django yang aman.
-   - Validasi bawaan
-   - Masih bisa di custom secara fleksibel
-- Kekurangan:
-   - Hanya dirancang untuk login standar (username & password)
-   - Hanya terbatas untuk beberapa form saja
-   - Kurang fleksibel untuk tampilan frontend kompleks
+Jika specificty sama, maka aturan yang muncul terakhir (paling bawah) dalam CSS yang akan dipakai (last rule wins).
 
-### Apa perbedaan antara autentikasi dan otorisasi? Bagaiamana Django mengimplementasikan kedua konsep tersebut?
-- Autentikasi (Authentication): Proses verifikasi identitas pengguna, langkah pertama untuk memastikan pengguna siapa yang mengakses. Contohnya saat login dengan username dan password.
 
-- Otorisasi (Authorization): Proses penentuan hak akses atau izin apa yang dimiliki pengguna setelah identitasnya diverifikasi, langkah kedua yang menentukan apa yang boleh pengguna tersebut lakukan. Contohnya apakah seorang admin bisa menghapus data atau apakah pengguna biasa bisa melihat suatu data.
+### Mengapa responsive design menjadi konsep yang penting dalam pengembangan aplikasi web? Berikan contoh aplikasi yang sudah dan belum menerapkan responsive design, serta jelaskan mengapa!
 
-Django mengimplementaskan menggunakan `django.contrib.auth`.
-Contoh implementasi untuk autentikasi adalah saat login yang kemudian dipanggil `autenticate()` atau `login(request, user)` dan contoh implementasi otorisasi adalah decorator yang membatasi akses view berdasarkan izin usernya `@login_required(login_url='/login')`
+Jarena responsive design membuat tampilan web menyesuaikan berbagai ukuran layar (HP, tablet, desktop) agar tetap nyaman digunakan. Contoh aplikasi yang sudah responsive adalah YouTube, dan kebanyakan website sudah responsif, mungkin yang belum adalah web lama atau web football-news sebelum ditambah responsif. 
 
-### Apa saja kelebihan dan kekurangan session dan cookies dalam konteks menyimpan state di aplikasi web?
-- Session:
-   - Kelebihan: 
-      - Lebih aman karena data penting tidak disimpan di browser, dan hanya session ID. 
-      - Bisa menyimpan data yang lebih besar dan kompleks. 
-      - Server memiliki kontrol penuh atas data.
-   - Kekurangan: 
-      - Membebani server karena harus menyimpan state di server
-      - Jika server down, sesi bisa hilang. 
-      - Sulit diimplementasikan pada aplikasi yang besar dan terdistribusi (multi-server) karena state harus dibagi ke setiap server.
-- Cookies: 
-   - Kelebihan: 
-      - Mengurangi beban server karena data disimpan di sisi klien
-      - Ringan dan sederhana untuk menyimpan preferensi pengguna. 
-      - Tidak memerlukan penyimpanan tambahan di server
-      - Bisa diakses langsung dari JavaScript untuk kebutuhan client-side.
-   - Kekurangan: 
-      - Ukuran data terbatas (biasanya 4KB per cookie)
-      - Rentan terhadap serangan XSS (Cross-Site Scripting) jika cookie tidak diamankan
-      - Data sensitif tidak aman jika disimpan langsung di cookie (karena bisa dibaca/dimanipulasi oleh client).
+Hal ini penting karena banyak juga user yang mengakses web melalui HP atau tablet. Jika tidak di setting, maka UX nya akan jelek dan sulit dibaca atau berinteraksi dengan webnya
 
-### Apakah penggunaan cookies aman secara default dalam pengembangan web, atau apakah ada risiko potensial yang harus diwaspadai? Bagaimana Django menangani hal tersebut?
-Tidak selalu aman, jika tanpa pengamanan yang tepat, cookies rentan terhadap beberapa risiko, antara lain:
+### Jelaskan perbedaan antara margin, border, dan padding, serta cara untuk mengimplementasikan ketiga hal tersebut!
 
-- Cross-Site Scripting (XSS): Penyerang bisa menyuntikkan skrip berbahaya ke halaman web untuk mencuri cookies pengguna.
-- Cross-Site Request Forgery (CSRF): Penyerang bisa memaksa pengguna untuk melakukan tindakan yang tidak diinginkan dengan menggunakan cookie autentikasi yang sudah ada.
-- Man-in-the-Middle Attack: Jika tidak dikirim melalui koneksi aman (HTTPS), cookies dapat dicuri atau diubah saat transit.
+- Margin : Ruang di luar border yang mengosongkan area di sekitar border (transparan)
+- Border : Garis tepian yang membungkus konten dan padding-nya
+- Padding : Ruang yang mengosongkan area di sekitar konten (transparan)
 
-Django mengambil langkah-langkah keamanan untuk meminimalkan risiko tersebut:
+Cara implementasinya, kita set saja css nya di bagian yang bersesuaian, contoh:
+```
+.box {
+  margin: 20px;               /* jarak luar */
+  border: 2px solid black;    /* garis di sekeliling box */
+  padding: 15px;              /* jarak antara teks dan border */
+}
+```
 
-- Session ID: Secara default, Django tidak menyimpan data sesi langsung di cookie. Sebaliknya, ia hanya menyimpan session ID yang unik. Data sesi yang sebenarnya disimpan di sisi server (database atau cache).
-- Tanda Tangan Kriptografis (Cryptographic Signing): Walaupun cookies dapat berisi data (misalnya, untuk pesan flash message), Django menandatangani (sign) cookies tersebut. Ini memastikan bahwa jika cookie diubah di sisi klien, Django akan mendeteksinya sebagai tidak valid dan menolaknya.
-- Proteksi CSRF: Django menyediakan CSRF middleware yang secara otomatis menambahkan token unik ke setiap formulir. Token ini harus ada saat permintaan diproses, mencegah serangan CSRF.
-- HTTPOnly: Django menetapkan cookie sesi dengan flag HttpOnly secara default. Ini mencegah skrip JavaScript di sisi klien untuk mengakses atau mencuri cookie tersebut, memberikan perlindungan terhadap serangan XSS.
-- Secure Flag: Django memungkinkan Anda untuk menetapkan SECURE_COOKIE menjadi True, yang memaksa browser hanya mengirim cookie melalui koneksi HTTPS. Ini mencegah pencurian cookie melalui koneksi yang tidak aman.
+### Jelaskan konsep flex box dan grid layout beserta kegunaannya!
 
-### Langkah Pengimplementasian
+Flexbox adalah sistem layout satu dimensi di CSS yang digunakan untuk mengatur elemen dalam satu arah, baik horizontal (baris) maupun vertikal (kolom). Flexbox sangat berguna untuk menyusun elemen secara fleksibel, seperti membuat menu navigasi, daftar kartu produk, atau tombol yang selalu sejajar meskipun ukurannya berbeda.
 
-#### 1. Implementasi Fungsi Registrasi, Login, dan Logout   
-   - Membuat fungsi `register`, `login_user`, `logout_user` pada `views.py` yang diimplementasikan dengan `UserCreationForm()`
-      ```
-      def register(request):
-         form = UserCreationForm()
+Grid Layout adalah sistem layout dua dimensi yang memungkinkan pengaturan elemen dalam baris dan kolom sekaligus. Grid lebih cocok untuk membuat struktur halaman yang kompleks, misalnya layout dashboard, halaman utama dengan sidebar, atau galeri gambar. 
 
-         if request.method == "POST":
-            form = UserCreationForm(request.POST)
-            if form.is_valid():
-                  form.save()
-                  messages.success(request, 'Your account has been successfully created!')
-                  return redirect('main:login')
-         context = {'form':form}
-         return render(request, 'register.html', context)
-      
-      def login_user(request):
-         if request.method == 'POST':
-            form = AuthenticationForm(data=request.POST)
-            if form.is_valid():
-                  user = form.get_user()
-                  login(request, user)
-                  return redirect('main:show_main')
-         else:
-            form = AuthenticationForm(request)
-         context = {'form': form}
-         return render(request, 'login.html', context)
+Perbedaannya, flexbox lebih fokus pada distribusi dan alignment elemen dalam satu dimensi (row atau column), sedangkan grid digunakan ketika kita butuh kontrol penuh terhadap tata letak dalam dua dimensi (row dan column).
 
-      def logout_user(request):
-         logout(request)
-         return redirect('main:login')
-      ```
-   - Implementasi juga untuk path di 'urls.py'
+---
 
-#### 2. Buat 2 akun pengguna dengan masing-masing tiga (3) dummy data menggunakan model yang telah dibuat sebelumnya untuk setiap akun di lokal.
-   - Membuat dua akun dengan dua kali register dengan akun yang berbeda
-   - Membuat tiga produk pada setiap akun yang telah dibuat
+### Jelaskan bagaimana cara kamu mengimplementasikan checklist di atas secara step-by-step (bukan hanya sekadar mengikuti tutorial)!
 
-   Akun 1
-   ![akun1](https://github.com/user-attachments/assets/d9e768d9-581e-4b31-841f-cf4669acce75)
-   Akun 2
-   ![akun2](https://github.com/user-attachments/assets/fd70a673-8ed5-483a-ac20-e4351e8b5897)
+#### 1. Implementasikan fungsi untuk menghapus dan mengedit product.
+```
+def edit_product(request, id):
+    product = get_object_or_404(Product, pk=id)
+    form = ProductForm(request.POST or None, instance=product)
+    if form.is_valid() and request.method == 'POST':
+        form.save()
+        return redirect('main:show_main')
+    context = {
+        'form': form
+    }
+    return render(request, "edit_product.html", context)
 
-#### 3. Hubungkan model `Product` dengan `User`.
-   - Mengimport User pada models.py
-      `user = models.ForeignKey(User, on_delete=models.CASCADE, null=True) `
-   - Menghubungkan satu product satu user, sehingga tiap product dapat terasosiasi dengan seorang user (many-to-one relationship)
-   - `null=True` memungkinkan news yang sudah ada sebelumnya tetap valid tanpa harus memiliki user
-   - `on_delete=models.CASCADE` berarti jika user dihapus, semua news milik user tersebut juga akan ikut terhapus
-   - Melakukan migrasi model
+def delete_product(request, id):
+    product = get_object_or_404(Product, pk=id)
+    product.delete()
+    return HttpResponseRedirect(reverse("main:show_main"))
+```
+Menambahkan fungsi diatas pada views.py dan menambahkan url dan menambahkan tombol di main.html. Fungsi edit diatas mengambil objek produk dan menampilkan form lagi untuk mengedit.
 
-#### 4. Tampilkan detail informasi pengguna yang sedang logged in seperti username dan menerapkan cookies seperti last_login pada halaman utama aplikasi.
-   - Menampilkan nama pengguna yang sedang login
-      `'name': request.user.username,`
-   - Menerapkan cookies last_login, Simpan cookie pada fungsi `login_user`
-      ```
-      if form.is_valid():
-         user = form.get_user()
-         login(request, user)
-         response = HttpResponseRedirect(reverse("main:show_main"))
-         response.set_cookie('last_login', str(datetime.datetime.now()))
-         return response
-      ```
-   - Tambahkan `last_login` pada `context` di `show_main` dengan mengakses cookie yang terdaftar di `request`
-   - Tambahkan juga `last_login` pada `main.html`
-   - Hapus cookie setelah logout pada fungsi `logout_user`
-      `response.delete_cookie('last_login')`
+#### 2. Kustomisasi desain pada template HTML yang telah dibuat menggunakan Tailwind CSS:
+
+Ubah file global.css untuk kustom pada form nya yang memiliki class form-style
+Kemudian melakukan kustomisasi pada halaman login, register, tambah product, edit product, dan detail product
+Kustomisasi halaman daftar product juga menjadi lebih menarik dan responsive
+Menambahkan beberapa detail:
+- Jika pada aplikasi belum ada product yang tersimpan, halaman daftar product akan menampilkan gambar dan pesan bahwa belum ada product yang terdaftar.
+- Jika sudah ada product yang tersimpan, halaman daftar product akan menampilkan detail setiap product dengan menggunakan card
+- Untuk setiap card product, ada juga dua buah button untuk mengedit dan menghapus product pada card tersebut tapi khusus sellernya
+Membuat navigation bar (navbar) untuk fitur-fitur pada aplikasi yang responsive terhadap perbedaan ukuran device, khususnya mobile dan desktop.
+
+Detail kode nya bisa diakses pada file di folder templates
+
+Kondisi navbar untuk versi mobile: 
+
+![Mobile Nav Off](https://github.com/user-attachments/assets/ee1b45d9-3051-4454-8521-1e69fd9e4304)
+
+Ketika tombol hamburger diklik: 
+
+![Mobile Nav On](https://github.com/user-attachments/assets/44b57a21-2e76-411b-90ca-835afb33621b)
+
+Kondisi navbar untuk versi desktop: 
+
+![Dekstop](https://github.com/user-attachments/assets/c0ae3582-3ddc-42f6-a49e-cf6a96c66173)

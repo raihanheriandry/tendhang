@@ -1,55 +1,66 @@
-<h1>Tendhang</h1>
+{% extends 'base.html' %}
+{% load static %}
 
-<h5>NPM: </h5>
-<p>{{ npm }}</p>
+{% block meta %}
+<title>Tendhang</title>
+{% endblock meta %}
 
-<h5>Name:</h5>
-<p>{{ name }}</p>
-
-<h5>Class:</h5>
-<p>{{ class }}</p>
-
-<a href="{% url 'main:add_product' %}">
-  <button>+ Add Product</button>
-</a>
-
-<a href="{% url 'main:logout' %}">
-  <button>Logout</button>
-</a>
-
-<h5>Sesi terakhir login: {{ last_login }}</h5>
-<hr>
-
-<a href="?filter=all">
-    <button type="button">All Product</button>
-</a>
-<a href="?filter=my">
-    <button type="button">My Product</button>
-</a> 
-<hr>
-
-{% if not product_list %}
-<p>Belum ada produk!.</p>
-{% else %}
-
-{% for product in product_list %}
-<div>
-  <h2><a href="{% url 'main:product_detail' product.id %}">{{ product.name }}</a></h2>
-
-  <p><b>{{ product.get_category_display }} | Ukuran: {{ product.size }} </b>{% if product.is_featured %} | 
-    <b>Featured</b>{% endif %} | Stok: {{ product.stock }} | Terjual: {{ product.sold }}</p>
-
-  {% if product.thumbnail %}
-  <img src="{{ product.thumbnail }}" alt="thumbnail" width="150" height="100">
-  <br />
-  {% endif %}
-
-  <p>{{ product.description|truncatewords:25 }}</p>
-
-  <p><a href="{% url 'main:product_detail' product.id %}"><button>Read More</button></a></p>
+{% block content %}
+{% include 'navbar.html' %}
+<div class="bg-yellow-50 w-full pt-16 min-h-screen">
+  <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
+    
+    <div class="w-full text-cyan-700 py-20 sm:py-16 px-6 text-center">
+      <h1 class="text-5xl lg:text-6xl font-extrabold mb-4">
+        Where Kickers Find Their Gear
+      </h1>
+      <p class="text-base sm:text-lg lg:text-xl max-w-2xl mx-auto">
+        Kick Better with the Right Gear
+      </p>
+    </div>
+    
+    <!-- Filter Section -->
+<div class="flex flex-col items-center mb-8 p-4">
+  <div class="flex space-x-8">
+    <a href="?" 
+       class="{% if request.GET.filter == 'all' or not request.GET.filter and not request.GET.category %} bg-cyan-600 text-white {% else %} bg-white text-gray-700 border border-gray-300 {% endif %} px-6 py-2 rounded-full font-medium transition-colors hover:bg-cyan-600 hover:text-white">
+      All Product
+    </a>
+    <a href="?filter=my" 
+       class="{% if request.GET.filter == 'my' %} bg-cyan-600 text-white {% else %} bg-white text-gray-700 border border-gray-300 {% endif %} px-6 py-2 rounded-full font-medium transition-colors hover:bg-cyan-600 hover:text-white">
+      My Product
+    </a>
+  </div>
 </div>
 
-<hr>
-{% endfor %}
 
-{% endif %}
+    {% if not product_list %}
+      <div class="bg-white rounded-lg border border-gray-200 p-12 text-center">
+        <div class="w-32 h-32 mx-auto mb-4">
+          <img src="{% static 'image/no-product.png' %}" alt="No news available" class="w-full h-full object-contain">
+        </div>
+        <h3 class="text-lg font-medium text-gray-900 mb-2">No product found</h3>
+        <p class="text-gray-500 mb-6">Be the first to sell your product here.</p>
+        <a href="{% url 'main:add_product' %}" class="inline-flex items-center px-4 py-2 bg-cyan-600 text-white rounded-md hover:bg-cyan-700 transition-colors">
+          Add Product
+        </a>
+      </div>
+    {% else %}
+      <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-12">
+        {% for product in product_list %}
+          {% include 'card_product.html' with product=product %}
+        {% endfor %}
+      </div>
+    {% endif %}
+
+    <div class="flex flex-col sm:flex-row sm:items-center sm:justify-between mb-8 rounded-lg border border-gray-300 p-4 mt-12">
+      {% if user.is_authenticated %}
+        <div class="text-sm text-gray-700">
+          Last login: {{ last_login }}
+        </div>
+      {% endif %}
+    </div>
+
+  </div>
+</div>
+{% endblock content %}
