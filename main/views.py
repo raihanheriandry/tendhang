@@ -60,7 +60,7 @@ def show_json(request):
             'sold': product.sold,
             'is_featured': product.is_featured,
             'size': product.size,
-            'id_user': product.user.id,
+            'id_user': product.user_id,
         }
         for product in product_list
     ]
