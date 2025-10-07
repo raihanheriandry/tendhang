@@ -14,7 +14,7 @@ function showToast(title, message, type = 'normal', duration = 3000) {
 
     // Set type styles and icon
     if (type === 'success') {
-        toastComponent.classList.add('bg-green-300', 'text-gray-500');
+        toastComponent.classList.add('bg-green-300', 'text-gray-50');
     } else if (type === 'error') {
         toastComponent.classList.add('bg-red-300','text-red-600');
     } else {
