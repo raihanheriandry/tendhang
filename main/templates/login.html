@@ -13,7 +13,7 @@
         <p class="text-gray-600">Welcome back to Tendhang</p>
       </div>
 
-      <!-- Form Errors Display -->
+      <!-- Form Errors Display (fallback jika non-AJAX) -->
       {% if form.non_field_errors %}
         <div class="mb-6">
           {% for error in form.non_field_errors %}
@@ -38,7 +38,8 @@
         </div>
       {% endif %}
 
-      <form method="POST" action="" class="space-y-6">
+      <!-- LOGIN FORM -->
+      <form id="loginForm" method="POST" action="" class="space-y-6">
         {% csrf_token %}
         
         <div>
@@ -70,7 +71,10 @@
         </button>
       </form>
 
-      <!-- Messages Display -->
+      <!-- AJAX MESSAGE AREA -->
+      <div id="loginMessage" class="mt-4 text-center text-sm"></div>
+
+      <!-- Django Messages (non-AJAX fallback) -->
       {% if messages %}
         <div class="mt-6">
           {% for message in messages %}
@@ -102,4 +106,51 @@
     </div>
   </div>
 </div>
+
+<script>
+  
+function getCookie(name) {
+  let cookieValue = null;
+  if (document.cookie && document.cookie !== '') {
+      const cookies = document.cookie.split(';');
+      for (let cookie of cookies) {
+          cookie = cookie.trim();
+          if (cookie.startsWith(name + '=')) {
+              cookieValue = decodeURIComponent(cookie.substring(name.length + 1));
+              break;
+          }
+      }
+  }
+  return cookieValue;
+}
+
+document.getElementById("loginForm").addEventListener("submit", async function(e) {
+  e.preventDefault();
+
+  const formData = new FormData(this);
+  const messageBox = document.getElementById("loginMessage");
+
+  messageBox.innerHTML = '<p class="text-gray-500">Processing...</p>';
+
+  try {
+    const response = await fetch("{% url 'main:ajax_login' %}", {
+      method: "POST",
+      body: formData,
+      headers: { "X-CSRFToken": getCookie("csrftoken") },
+    });
+
+    const data = await response.json();
+
+    if (data.success) {
+      messageBox.innerHTML = '<p class="text-green-600 font-medium">' + data.message + '</p>';
+      setTimeout(() => { window.location.href = "{% url 'main:show_main' %}"; }, 700);
+      showToast(data.message || 'Product deleted successfully!', '', 'success');
+    } else {
+      messageBox.innerHTML = '<p class="text-red-600 font-medium">' + data.message + '</p>';
+    }
+  } catch (err) {
+    messageBox.innerHTML = '<p class="text-red-600">Terjadi kesalahan pada server.</p>';
+  }
+});
+</script>
 {% endblock content %}

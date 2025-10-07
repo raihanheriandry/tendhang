@@ -1,0 +1,226 @@
+<!-- Modal -->
+<div 
+  id="crudModal" 
+  class="hidden fixed inset-0 z-50 flex items-center justify-center bg-black bg-opacity-40 p-6"
+>
+  <div 
+    id="crudModalContent" 
+    class="bg-yellow-50 rounded-2xl shadow-xl w-[90vw] md:w-[80vw] lg:w-[70vw] 
+           transform transition-all duration-150 opacity-0 scale-95 p-6"
+  >
+
+    <!-- Header -->
+    <div class="flex items-center justify-between border-b border-gray-200 pb-3 mb-4">
+      <h3 class="text-2xl font-semibold text-gray-900">Add New Product</h3>
+      <button 
+        type="button" 
+        class="text-gray-400 hover:text-gray-900 hover:bg-gray-200 rounded-lg p-1.5" 
+        onclick="hideAddModal()"
+      >
+        <svg 
+          aria-hidden="true" 
+          class="w-6 h-6" 
+          fill="currentColor" 
+          viewBox="0 0 20 20" 
+          xmlns="http://www.w3.org/2000/svg"
+        >
+          <path 
+            fill-rule="evenodd" 
+            d="M4.293 4.293a1 1 0 011.414 0L10 8.586l4.293-4.293a1 1 0 
+               111.414 1.414L11.414 10l4.293 4.293a1 1 0 
+               01-1.414 1.414L10 11.414l-4.293 4.293a1 1 
+               0 01-1.414-1.414L8.586 10 4.293 
+               5.707a1 1 0 010-1.414z" 
+            clip-rule="evenodd"
+          ></path>
+        </svg>
+        <span class="sr-only">Close modal</span>
+      </button>
+    </div>
+
+    <!-- Body -->
+    <form id="productForm" class="grid grid-cols-1 md:grid-cols-2 gap-6">
+      <!-- Left Column -->
+      <div class="space-y-4">
+        <!-- Name -->
+        <div>
+          <label for="name" class="block text-sm font-medium text-gray-700">Name</label>
+          <input 
+            type="text" 
+            id="name" 
+            name="name" 
+            class="mt-1 block w-full border border-gray-300 rounded-md px-3 py-2 
+                   focus:ring-cyan-500 focus:border-cyan-500" 
+            required
+          >
+        </div>
+
+        <!-- Description -->
+        <div>
+          <label for="description" class="block text-sm font-medium text-gray-700">Description</label>
+          <textarea 
+            id="description" 
+            name="description" 
+            rows="4" 
+            class="mt-1 block w-full border border-gray-300 rounded-md px-3 py-2 
+                   focus:ring-cyan-500 focus:border-cyan-500 resize-none" 
+            required
+          ></textarea>
+        </div>
+
+        <!-- Category -->
+        <div>
+          <label for="category" class="block text-sm font-medium text-gray-700">Category</label>
+          <select 
+            id="category" 
+            name="category" 
+            class="mt-1 block w-full border border-gray-300 rounded-md px-3 py-2 
+                   focus:ring-cyan-500 focus:border-cyan-500" 
+            required
+          >
+            <option value="jersey">Jersey Bola</option>
+            <option value="shoes">Sepatu Bola</option>
+            <option value="ball">Bola</option>
+            <option value="accessories">Aksesoris</option>
+            <option value="training">Alat Latihan</option>
+            <option value="jacket">Jaket</option>
+          </select>
+        </div>
+
+        <!-- Price -->
+        <div>
+          <label for="price" class="block text-sm font-medium text-gray-700">Price (IDR)</label>
+          <input 
+            type="number" 
+            id="price" 
+            name="price" 
+            min="0"
+            class="mt-1 block w-full border border-gray-300 rounded-md px-3 py-2 
+                   focus:ring-cyan-500 focus:border-cyan-500"
+            required
+          >
+        </div>
+      </div>
+
+      <!-- Right Column -->
+      <div class="space-y-4">
+        <!-- Thumbnail -->
+        <div>
+          <label for="thumbnail" class="block text-sm font-medium text-gray-700">Thumbnail URL</label>
+          <input 
+            type="url" 
+            id="thumbnail" 
+            name="thumbnail" 
+            class="mt-1 block w-full border border-gray-300 rounded-md px-3 py-2 
+                   focus:ring-cyan-500 focus:border-cyan-500"
+          >
+        </div>
+
+        <!-- Stock -->
+        <div>
+          <label for="stock" class="block text-sm font-medium text-gray-700">Stock</label>
+          <input 
+            type="number" 
+            id="stock" 
+            name="stock" 
+            min="0"
+            class="mt-1 block w-full border border-gray-300 rounded-md px-3 py-2 
+                   focus:ring-cyan-500 focus:border-cyan-500"
+          >
+        </div>
+
+        <!-- Size -->
+        <div>
+          <label for="size" class="block text-sm font-medium text-gray-700">Size</label>
+          <input 
+            type="text" 
+            id="size" 
+            name="size" 
+            class="mt-1 block w-full border border-gray-300 rounded-md px-3 py-2 
+                   focus:ring-cyan-500 focus:border-cyan-500"
+          >
+        </div>
+
+        <!-- Featured -->
+        <div class="flex items-center pt-2">
+          <input 
+            id="is_featured" 
+            name="is_featured" 
+            type="checkbox" 
+            class="w-4 h-4 text-cyan-600 border-gray-300 rounded focus:ring-cyan-500"
+          >
+          <label for="is_featured" class="ml-2 text-sm font-medium text-gray-900">Featured</label>
+        </div>
+      </div>
+    </form>
+
+    <!-- Footer -->
+    <div class="flex flex-col sm:flex-row gap-4 mt-8 border-t border-gray-200 pt-5">
+      <button 
+        type="button" 
+        id="cancelButton" 
+        class="order-2 sm:order-1 px-6 py-3 border border-gray-300 text-gray-700 rounded-md 
+               font-medium hover:bg-gray-50 transition-colors text-center"
+        onclick="hideAddModal()"
+      >
+        Cancel
+      </button>
+
+      <button 
+        type="submit" 
+        id="submitProduct" 
+        form="productForm" 
+        class="order-1 sm:order-2 flex-1 bg-cyan-600 text-white px-6 py-3 rounded-md 
+               font-medium hover:bg-cyan-700 transition-colors"
+      >
+        Publish Product
+      </button>
+    </div>
+  </div>
+</div>
+
+<!-- Modal Script -->
+<script>
+  function showAddModal() {
+    const modal = document.getElementById('crudModal');
+    const modalContent = document.getElementById('crudModalContent');
+    modal.classList.remove('hidden');
+    setTimeout(() => {
+      modalContent.classList.remove('opacity-0', 'scale-95');
+      modalContent.classList.add('opacity-100', 'scale-100');
+    }, 50);
+  }
+
+  function hideAddModal() {
+    const modal = document.getElementById('crudModal');
+    const modalContent = document.getElementById('crudModalContent');
+    modalContent.classList.remove('opacity-100', 'scale-100');
+    modalContent.classList.add('opacity-0', 'scale-95');
+    setTimeout(() => {
+      modal.classList.add('hidden');
+    }, 150);
+  }
+
+  async function addProductEntry() {
+    await fetch("{% url 'main:add_product_entry_ajax' %}", {
+      method: "POST",
+      body: new FormData(document.querySelector('#productForm')),
+    });
+
+    document.getElementById("productForm").reset();
+    hideAddModal();
+      
+    // Show toast notification
+    showToast('Product added successfully!', '', 'success');
+
+    // Notify main.html
+    document.dispatchEvent(new CustomEvent('productAdded'));
+
+    return false;
+  }
+
+  document.getElementById("productForm").addEventListener("submit", function(e) {
+    e.preventDefault();
+    addProductEntry();
+  });
+</script>

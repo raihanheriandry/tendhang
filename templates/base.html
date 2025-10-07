@@ -1,6 +1,6 @@
 {% load static %}
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" class="overflow-y-scroll">
 <head>
 {% block meta %}
     <meta charset="UTF-8" />
@@ -14,5 +14,9 @@
 
 <body style="font-family: 'Poppins', sans-serif;">
     {% block content %} {% endblock content %}
+    {% include 'toast.html' %}
+    {% include 'modal_add.html' %}
+    {% include 'modal_edit.html' %}
+    {% include 'modal_delete.html' %}
 </body>
 </html>

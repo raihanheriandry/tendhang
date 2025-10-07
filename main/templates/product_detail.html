@@ -3,7 +3,7 @@
 {% load humanize %}
 
 {% block meta %}
-<title>{{ product.name }} - Tendhang</title>
+<title>Detail Product - Tendhang</title>
 {% endblock meta %}
 
 {% block content %}
@@ -11,80 +11,160 @@
   <div class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
     
     <!-- Back Navigation -->
-    <div class="mb-6">
+    <div class="mb-16">
       <a href="{% url 'main:show_main' %}" class="text-gray-600 hover:text-gray-900 font-medium transition-colors">
         ← Back to Products
       </a>
     </div>
 
-    <!-- Product Detail -->
-    <div class="overflow-hidden">
+    <!-- Loading -->
+    <div id="loading-state" class="p-12 text-center">
+      <svg class="animate-spin h-8 w-8 text-cyan-600 inline-block" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
+        <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle>
+        <path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8v4a4 4 0 00-4 4H4z"></path>
+      </svg>
+      <p class="text-gray-600 mt-3">Loading product detail...</p>
+    </div>
 
-      <!-- Grid Layout -->
-      <div class="grid grid-cols-1 lg:grid-cols-2 gap-8 p-6 sm:p-10">
+    <!-- Error -->
+    <div id="error-state" class="p-12 text-center hidden">
+      <div class="text-red-500 text-5xl mb-3">⚠️</div>
+      <h3 class="text-lg font-medium text-gray-900 mb-2">Failed to load product</h3>
+      <p class="text-gray-500">Please try again later.</p>
+    </div>
 
-        <!-- Product Image -->
-        <div>
-          {% if product.thumbnail %}
-            <img src="{{ product.thumbnail }}" 
-                 alt="{{ product.name }}" 
-                 class="w-full h-72 sm:h-96 lg:h-[28rem] object-cover rounded-lg">
-          {% else %}
-            <div class="w-full h-72 sm:h-96 lg:h-[28rem] flex items-center justify-center bg-gray-100 rounded-lg text-gray-400">
-              No Image Available
-            </div>
-          {% endif %}
+    <!-- Product Content -->
+    <article id="product-content" class="overflow-hidden hidden">
+      <div class="grid grid-cols-1 lg:grid-cols-2 gap-12 items-start">
+        <!-- Image -->
+        <div id="featured-image-container" class="hidden">
+          <img id="featured-image" src="" alt="" class="w-full rounded-lg shadow-md object-cover">
         </div>
 
         <!-- Product Info -->
         <div class="flex flex-col justify-between">
           <div>
             <!-- Tags -->
-            <div class="flex flex-wrap items-center gap-2 mb-4">
-              <span class="inline-flex items-center px-3 py-1 rounded-full text-xs font-medium bg-cyan-600 text-white">
-                {{ product.get_category_display }}
-              </span>
-              {% if product.is_featured %}
-                <span class="inline-flex items-center px-3 py-1 rounded-full text-xs font-medium bg-yellow-100 text-yellow-800">
-                  Featured
-                </span>
-              {% endif %}
-            </div>
+            <div id="badges-container" class="flex flex-wrap items-center gap-2 mb-4"></div>
 
             <!-- Title -->
-            <h1 class="text-3xl sm:text-4xl font-bold text-gray-900 leading-tight mb-4">
-              {{ product.name }}
-            </h1>
+            <h1 id="product-title" class="text-3xl sm:text-4xl font-bold text-gray-900 leading-tight mb-4"></h1>
 
             <!-- Price -->
-            <p class="text-2xl sm:text-3xl font-semibold text-cyan-600 mb-6">
-              Rp {{ product.price|intcomma }}
-            </p>
+            <p id="product-price" class="text-2xl sm:text-3xl font-semibold text-cyan-600 mb-6"></p>
 
             <!-- Details -->
             <div class="flex flex-wrap items-center text-sm text-gray-600 gap-6 mb-6">
-              {% if product.size %}<span>Ukuran: {{ product.size }}</span>{% endif %}
-              <span>Stok: {{ product.stock }}</span>
-              <span>Terjual: {{ product.sold }}</span>
+              <span id="size"></span>
+              <span id="stock"></span>
+              <span id="sold"></span>
             </div>
 
             <!-- Description -->
-            <div class="text-gray-700 leading-relaxed whitespace-pre-line text-base sm:text-lg">
-              {{ product.description }}
-            </div>
+            <div id="product-description" class="text-gray-700 leading-relaxed whitespace-pre-line text-base sm:text-lg"></div>
           </div>
 
           <!-- Seller Info -->
           <div class="mt-8 pt-6 border-t border-gray-200">
-            <p class="font-medium text-gray-900">
-              Seller: {{ product.user.username|default:"Anonymous" }}
-            </p>
+            <p id="seller" class="font-medium text-gray-900">Seller: Loading...</p>
             <p class="text-sm text-gray-500">Trusted Seller on Tendhang</p>
           </div>
         </div>
-
       </div>
-    </div>
+    </article>
   </div>
 </div>
+
+<script>
+  
+const PRODUCT_ID = "{{ product.id }}";
+const PRODUCT_DETAIL_ENDPOINT = `{% url 'main:show_json_by_id' '00000000-0000-0000-0000-000000000000' %}`.replace('00000000-0000-0000-0000-000000000000', PRODUCT_ID);
+
+const loadingState = document.getElementById('loading-state');
+const errorState = document.getElementById('error-state');
+const productContent = document.getElementById('product-content');
+const featuredImageContainer = document.getElementById('featured-image-container');
+const featuredImage = document.getElementById('featured-image');
+const badgesContainer = document.getElementById('badges-container');
+const productTitle = document.getElementById('product-title');
+const productPrice = document.getElementById('product-price');
+const productDescription = document.getElementById('product-description');
+const size = document.getElementById('size');
+const stock = document.getElementById('stock');
+const sold = document.getElementById('sold');
+const seller = document.getElementById('seller');
+
+function showState(state) {
+  loadingState.classList.toggle('hidden', state !== 'loading');
+  errorState.classList.toggle('hidden', state !== 'error');
+  productContent.classList.toggle('hidden', state !== 'ready');
+}
+
+// Mapping kategori
+function getCategoryLabel(category) {
+  const map = {
+    jersey: 'Jersey Bola',
+    shoes: 'Sepatu Bola',
+    ball: 'Bola',
+    accessories: 'Aksesoris',
+    training: 'Alat Latihan',
+    jacket: 'Jaket',
+  };
+  return map[category] || category;
+}
+
+function renderProduct(product) {
+  document.title = `${product.name} - Tendhang`;
+  productTitle.textContent = product.name;
+  productPrice.textContent = `Rp ${Number(product.price).toLocaleString('id-ID')}`;
+  productDescription.textContent = product.description || '-';
+
+  // detail kecil
+  size.textContent = product.size ? `Ukuran: ${product.size}` : '';
+  stock.textContent = `Stok: ${product.stock}`;
+  sold.textContent = `Terjual: ${product.sold}`;
+
+  // badges
+  badgesContainer.innerHTML = '';
+  const cat = document.createElement('span');
+  cat.className = 'inline-flex items-center px-3 py-1 rounded-full text-xs font-medium bg-cyan-600 text-white';
+  cat.textContent = getCategoryLabel(product.category);
+  badgesContainer.appendChild(cat);
+  if (product.is_featured) {
+    const feat = document.createElement('span');
+    feat.className = 'inline-flex items-center px-3 py-1 rounded-full text-xs font-medium bg-yellow-100 text-yellow-800';
+    feat.textContent = 'Featured';
+    badgesContainer.appendChild(feat);
+  }
+
+  // gambar
+  if (product.thumbnail) {
+    featuredImage.src = product.thumbnail;
+    featuredImage.alt = product.name;
+    featuredImageContainer.classList.remove('hidden');
+  } else {
+    featuredImageContainer.classList.add('hidden');
+  }
+
+  // seller
+  seller.textContent = `Seller: ${product.user_username || 'Anonymous'}`;
+}
+
+async function loadProductDetail() {
+  try {
+    showState('loading');
+    const res = await fetch(PRODUCT_DETAIL_ENDPOINT, { headers: { 'Accept': 'application/json' } });
+    if (!res.ok) throw new Error('Failed to fetch');
+    const data = await res.json();
+    renderProduct(data);
+    showState('ready');
+  } catch (err) {
+    console.error(err);
+    showState('error');
+  }
+}
+
+loadProductDetail();
+</script>
+
 {% endblock content %}
