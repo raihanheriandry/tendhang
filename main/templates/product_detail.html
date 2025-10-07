@@ -147,7 +147,8 @@ function renderProduct(product) {
   }
 
   // seller
-  seller.textContent = `Seller: ${product.user_username || 'Anonymous'}`;
+  const sellerName = product.user_username;
+  seller.textContent = `Seller: ${sellerName}`;
 }
 
 async function loadProductDetail() {

@@ -81,6 +81,7 @@ def show_json_by_id(request, product_id):
             'is_featured': product.is_featured,
             'size': product.size,
             'id_user': product.user_id,
+            'user_username': product.user.username if product.user_id else None,
         }
         return JsonResponse(data)
     except Product.DoesNotExist:
